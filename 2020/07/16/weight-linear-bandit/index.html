@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="OR_小白">
 <meta property="og:description" content="这篇文章主要讨论了Linear contextual bandits 在 Non-Stationary 情况下的求解办法。在这种情况下的流程如下： 在时刻\(t\) :  选择一个 action : \(A_t\) 观察到带噪音的 reward : \(X_t &#x3D; A_t^T \theta^*_t + \eta_t\)  Non-Stationary 情形下的一个重要特征就是\(\theta^*_">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/Users/xx/Library/Application%20Support/typora-user-images/image-20200716173601789.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/16/weight-linear-bandit/pic/alg1.png">
 <meta property="article:published_time" content="2020-07-16T10:53:31.000Z">
-<meta property="article:modified_time" content="2020-07-16T10:56:37.262Z">
+<meta property="article:modified_time" content="2020-07-16T11:20:55.039Z">
 <meta property="article:author" content="Chenhao wang">
 <meta property="article:tag" content="papers">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/Users/xx/Library/Application%20Support/typora-user-images/image-20200716173601789.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/16/weight-linear-bandit/pic/alg1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/07/16/weight-linear-bandit/">
 
@@ -177,7 +177,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-07-16 18:53:31 / Modified: 18:56:37" itemprop="dateCreated datePublished" datetime="2020-07-16T18:53:31+08:00">2020-07-16</time>
+              <time title="Created: 2020-07-16 18:53:31 / Modified: 19:20:55" itemprop="dateCreated datePublished" datetime="2020-07-16T18:53:31+08:00">2020-07-16</time>
             </span>
 
           
@@ -203,36 +203,35 @@
 <li>slowly change</li>
 </ul>
 <p>通常会有 variation budget 的约束，也就是：</p>
-<p>$$ <em>{s=1}<sup>{T-1}|<em>{s}^{}-</em>{s+1}</sup>{}|</em>{2} B_{T}</p>
-<p>$$</p>
-<p>这里<span class="math inline">\(B_T\)</span>理论上应该是一个未知的量，但这样分析的难度就很大，作者只讨论了<span class="math inline">\(B_T\)</span>已知的情况</p>
+<p><span class="math display">\[ \sum_{s=1}^{T-1}\left\|\theta_{s}^{\star}-\theta_{s+1}^{\star}\right\|_{2} \leq B_{T} \]</span></p>
+<p>这里 <span class="math inline">\(B_T\)</span> 理论上应该是一个未知的量，但这样分析的难度就很大，作者只讨论了<span class="math inline">\(B_T\)</span>已知的情况</p>
 <p>为了更方便的讨论问题，作者有如下假设：</p>
 <ul>
-<li><span class="math inline">\(\eta_t\)</span>是一个<span class="math inline">\(\sigma\)</span>-sub-gaussian的随机变量</li>
+<li><span class="math inline">\(\eta_t\)</span> 是一个 <span class="math inline">\(\sigma\)</span>-sub-gaussian 的随机变量</li>
 <li><span class="math inline">\(\forall t \geq 1, \forall a \in \mathcal{A}_{t},\|a\|_{2} \leq L\)</span></li>
 <li><span class="math inline">\(\forall t \geq 1,\left\|\theta_{t}^{\star}\right\|_{2} \leq S\)</span></li>
 <li><span class="math inline">\(\forall t \geq 1, \forall a \in \mathcal{A}_{t},\left|\left\langle a, \theta_{t}^{\star}\right\rangle\right| \leq 1\)</span></li>
 </ul>
-<p><strong>核心思想</strong>：对于如何估计参数<span class="math inline">\(\theta^*_t\)</span>，作者采用了加权最小二乘估计，也就是对于历史数据，对比较新的数据赋予较大的权重，对早已收集到的数据赋予较小的权重，并据此构建 Upper Confidence Bound 来选取 action</p>
+<p><strong>核心思想</strong>：对于如何估计参数 <span class="math inline">\(\theta^*_t\)</span>，作者采用了加权最小二乘估计，也就是对于历史数据，对比较新的数据赋予较大的权重，对早已收集到的数据赋予较小的权重，并据此构建 Upper Confidence Bound 来选取 action</p>
 <p><strong>加权最小二乘估计</strong></p>
-<p>$$ <em>{t}= </em>{s=1}^{t} w_{s}(X_{s}-A_{s}^{} )^{2}+||_{2}^{2}</p>
-<p>$$</p>
-<p>$$ <em>{t}=(</em>{s=1}^{t} w_{s} A_{s} A_{s}<sup>{}+<em>{t} I</em>{d})</sup>{-1} <em>{s=1}^{t} w</em>{s} A_{s} X_{s}</p>
-<p>$$</p>
-<p>假设 $ _{t}<sup>{}=</sup>{}$ 对于任意的 <span class="math inline">\(\delta&gt;0,\)</span> 以 $ 1-$ 的概率,有以下估计</p>
-<p>$(t,|<em>{t}-^{}|</em>{V_{t} <em>{t}^{-1} V</em>{t}}  S+) $</p>
+<p><span class="math display">\[\hat{\theta}_{t}=\underset{\theta \in \mathbb{R}^{d}}{\arg \min } \sum_{s=1}^{t} w_{s}\left(X_{s}-A_{s}^{\top} \theta\right)^{2}+\frac{\lambda_{t}}{2}\|\theta\|_{2}^{2}\]</span></p>
+<p><span class="math display">\[\hat{\theta}_{t}=\left(\sum_{s=1}^{t} w_{s} A_{s} A_{s}^{\top}+\lambda_{t} I_{d}\right)^{-1} \sum_{s=1}^{t} w_{s} A_{s} X_{s}\]</span></p>
+<p>假设 <span class="math inline">\(\theta_{t}^{\star}=\theta^{\star}\)</span> 对于任意的 <span class="math inline">\(\delta&gt;0\)</span> 以 <span class="math inline">\(1-\delta\)</span> 的概率,有以下估计</p>
+<p><span class="math display">\[\mathbb{P}\left(\forall t,\left\|\hat{\theta}_{t}-\theta^{\star}\right\|_{V_{t} \tilde{V}_{t}^{-1} V_{t}} \leq \frac{\lambda_{t}}{\sqrt{\mu_{t}}} S+\sigma \sqrt{2 \log (1 / \delta)+d \log \left(1+\frac{L^{2} \sum_{s=1}^{t} w_{s}^{2}}{d \mu_{t}}\right)}\right)\]</span></p>
 <ul>
-<li>$V_{t} =<em>{s=1}^{t} w</em>{s} A_{s} A_{s}^{}+<em>{t} I</em>{d} $</li>
+<li><span class="math inline">\(V_{t} =\sum_{s=1}^{t} w_{s} A_{s} A_{s}^{\top}+\lambda_{t} I_{d}\)</span></li>
 <li><span class="math inline">\(\widetilde{V}_{t} =\sum_{s=1}^{t} w_{s}^{2} A_{s} A_{s}^{\top}+\mu_{t} I_{d}\)</span></li>
 </ul>
-<p>这里注意到对于正则项的系数<span class="math inline">\(\lambda\)</span>也是一个随时间变化的参数，并且引入了一个新的参数<span class="math inline">\(\mu_t\)</span></p>
+<p>这里注意到对于正则项的系数 <span class="math inline">\(\lambda\)</span> 也是一个随时间变化的参数，并且引入了一个新的参数<span class="math inline">\(\mu_t\)</span></p>
 <ul>
 <li>首先对于以上的 concentration inequality，总共涉及到三个参数<span class="math inline">\(\lambda_t, \mu_t, w_t\)</span></li>
-<li>为了保证<span class="math inline">\(V_{t} \tilde{V}_{t}^{-1} V_{t}\)</span>是 scale-invariant 的，<span class="math inline">\(\mu_t\)</span> 应该和 $ _t^2$ 是同阶的</li>
+<li>为了保证 <span class="math inline">\(V_{t} \tilde{V}_{t}^{-1} V_{t}\)</span> 是 scale-invariant 的，<span class="math inline">\(\mu_t\)</span> 应该和 <span class="math inline">\(\lambda_t^2\)</span> 是同阶的</li>
 <li>在 concentration inequality 总共有两项，如果我们对 <span class="math inline">\(w_t\)</span> 采用指数增长，也就是<span class="math inline">\(w_t = \gamma^{-t}\)</span>，<span class="math inline">\(0&lt;\gamma&lt;1\)</span>，那么后一项将会占据主要的作用，从而使得我们可能不会找到最优的action， 因此对<span class="math inline">\(\lambda_t\)</span>也应该依赖于时间变化，比如<span class="math inline">\(\lambda_t = \gamma_t^{-t} \lambda\)</span></li>
 </ul>
 <p><strong>算法框架</strong></p>
-<p><img src="/Users/xx/Library/Application%20Support/typora-user-images/image-20200716173601789.png" /></p>
+<figure>
+<img src="pic/alg1.png" alt="alg1" /><figcaption>alg1</figcaption>
+</figure>
 <ul>
 <li>算法中的核心是估计 upper confidence bound, 也就是 <span class="math inline">\(\beta_t\)</span>，然后依次更新相关参数</li>
 </ul>
@@ -242,15 +241,13 @@
 <li>The confidence ellipsoid <span class="math inline">\(\mathcal{C}_{t}=\left\{\theta \in \mathbb{R}^{d}:\left\|\theta-\hat{\theta}_{t-1}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}} \leq \beta_{t-1}\right\}\)</span></li>
 <li><span class="math inline">\(\beta_{t-1}\)</span>的构成中后面一项实际是对<span class="math inline">\(S_t = \sum_{s=1}^t w_s A_s \eta_s\)</span> 在 <span class="math inline">\(\tilde{V}_{t}^{-1}\)</span>范数下的估计 (<strong>lemma 1, 2, Proposition 1</strong>)</li>
 <li>可以证明 <span class="math inline">\(\bar{\theta}_{t}\)</span> 以至少 <span class="math inline">\(1-\delta\)</span> 的概率属于 <span class="math inline">\(\mathcal{C}_{t}\)</span> (<strong>Proposition 3</strong>)</li>
-<li><span class="math inline">\(r_t = \left\langle A_{t}^{\star}-A_{t}, \bar{\theta}_{t}\right\rangle+\left\langle A_{t}^{\star}-A_{t}, \theta_{t}^{\star}-\bar{\theta}_{t}\right\rangle \leq \left\|A_{t}\right\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}} \underbrace{\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}}_{\text {Deviation term }} +2 L \underbrace{\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}}_{\text {Bias term }}\)</span></li>
-<li>对于 <span class="math inline">\(\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}\)</span> ，因为两者都位于<span class="math inline">\(\mathcal{C}_{t}\)</span>中，所以可以被<span class="math inline">\(\beta_{t-1}\)</span>bound住</li>
-<li>对于<span class="math inline">\(\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}\)</span>这一项，因为<span class="math inline">\(\bar{\theta}_{t}\)</span>的构成中涉及到前t项历史数据，而在参数指数增长<span class="math inline">\(w_t\)</span>的情形下，最开始一些项便不太重要，因此引入参数<span class="math inline">\(D\)</span>来进行划分为<span class="math inline">\(s&lt;t-D\)</span> 和 <span class="math inline">\(t-D \leq s \leq t-1\)</span>两部分分别进行估计</li>
-<li>还剩一项$|A_{t}|<em>{V</em>{t-1}^{-1} <em>{t-1} V</em>{t-1}^{-1}} <span class="math inline">\(，作者根据\)</span>|A_t, _{t}^{}| 1$这一假设放缩为估计（<strong>没看懂</strong>） <span class="math inline">\(\min(1, \|A_t\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}})\)</span>，再利用不等式 <span class="math inline">\(\min(1,x) \leq 2 \log(1+x) \quad \forall x \geq 0\)</span>进一步放缩，并根据<span class="math inline">\(V_{t}和\tilde{V}_{t}\)</span>的构成形式得到最后的结果 (<strong>lemma 4, Proposition 4</strong>)</li>
+<li><span class="math display">\[r_t = \left\langle A_{t}^{\star}-A_{t}, \bar{\theta}_{t}\right\rangle+\left\langle A_{t}^{\star}-A_{t}, \theta_{t}^{\star}-\bar{\theta}_{t}\right\rangle \leq \left\|A_{t}\right\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}}  \underbrace{\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}}_{\text {Deviation term }}    +2 L \underbrace{\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}}_{\text {Bias term }}\]</span></li>
+<li>对于 <span class="math inline">\(\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}\)</span> ，因为两者都位于<span class="math inline">\(\mathcal{C}_{t}\)</span>中，所以可以被 <span class="math inline">\(\beta_{t-1}\)</span> bound住</li>
+<li>对于<span class="math inline">\(\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}\)</span> 这一项，因为<span class="math inline">\(\bar{\theta}_{t}\)</span>的构成中涉及到前t项历史数据，而在参数指数增长<span class="math inline">\(w_t\)</span>的情形下，最开始一些项便不太重要，因此引入参数<span class="math inline">\(D\)</span>来进行划分为<span class="math inline">\(s&lt;t-D\)</span> 和 <span class="math inline">\(t-D \leq s \leq t-1\)</span>两部分分别进行估计</li>
+<li>还剩一项 <span class="math inline">\(\left\|A_{t}\right\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}}\)</span>，作者根据<span class="math inline">\(\left|\left\langle A_t, \theta_{t}^{\star}\right\rangle\right|\leq 1\)</span>这一假设放缩为估计（<strong>没看懂</strong>） <span class="math inline">\(\min(1, \|A_t\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}})\)</span>，再利用不等式 <span class="math inline">\(\min(1,x) \leq 2 \log(1+x) \quad \forall x \geq 0\)</span>进一步放缩，并根据<span class="math inline">\(V_{t}和\tilde{V}_{t}\)</span>的构成形式得到最后的结果 (<strong>lemma 4, Proposition 4</strong>)</li>
 </ul>
-<p><strong>代码</strong></p>
-<p>https://github.com/YRussac/WeightedLinearBandits</p>
-<p><strong>Slides</strong></p>
-<p>[https://sgrunewalder.files.wordpress.com/2019/09/ak_mab19.pdf](</p>
+<p><strong>代码</strong> <a href="https://github.com/YRussac/WeightedLinearBandits" target="_blank" rel="noopener" class="uri">https://github.com/YRussac/WeightedLinearBandits</a></p>
+<p><strong>Slides</strong> <a href="https://https://sgrunewalder.files.wordpress.com/2019/09/ak_mab19.pdf" target="_blank" rel="noopener">https://sgrunewalder.files.wordpress.com/2019/09/ak_mab19.pdf</a></p>
 
     </div>
 
@@ -440,6 +437,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
