@@ -178,7 +178,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-20 23:26:27" itemprop="dateModified" datetime="2020-07-20T23:26:27+08:00">2020-07-20</time>
+                <time title="Modified: 2020-07-21 07:44:13" itemprop="dateModified" datetime="2020-07-21T07:44:13+08:00">2020-07-21</time>
               </span>
 
           
@@ -311,7 +311,7 @@
 <li><span class="math inline">\(\mathbf{E}\left[\sum_{i=1}^{\lceil T / H \rceil} \sum_{t=(i-1) H+1}^{i \cdot H \wedge T}\left\langle X_{t}^{w^{\dagger}}, \theta_{t}\right\rangle-\sum_{i=1}^{\lceil T / H \rceil} \sum_{t=(i-1) H+1}^{i \cdot H \wedge T}\left\langle X_{t}^{w_{i}}, \theta_{t}\right\rangle\right]\)</span></li>
 </ul>
 <p>对于第一项，根据之前的分析可以得到粗略的阶为 <span class="math inline">\(\widetilde{O}\left(w^{\dagger} B_{T}+\frac{d T}{\sqrt{w^{\dagger}}}\right)\)</span></p>
-<p>对于第二项，假设有<span class="math inline">\(K\)</span>个arm，时间长度为<span class="math inline">\(T\)</span>，reward 是在 <span class="math inline">\([0,1]\)</span> 之间，那么EXP3的regret bound 大致为 $ () $, 在我们的考虑中, reward不超过 <span class="math inline">\(Q\)</span> w.h.p , 时间大致有 <span class="math inline">\(\frac{T}{H}\)</span>， 假设有<span class="math inline">\(|J|\)</span>个arm, 那我们得到的阶为 $ (Q) $</p>
+<p>对于第二项，假设有<span class="math inline">\(K\)</span>个arm，时间长度为<span class="math inline">\(T\)</span>，reward 是在 <span class="math inline">\([0,1]\)</span> 之间，那么EXP3的regret bound 大致为 <span class="math inline">\(\widetilde{O} \left(\sqrt{TK}\right)\)</span>, 在我们的考虑中, reward不超过 <span class="math inline">\(Q\)</span> w.h.p , 时间大致有 <span class="math inline">\(\frac{T}{H}\)</span>， 假设有<span class="math inline">\(|J|\)</span>个arm, 那我们得到的阶为 <span class="math inline">\(\widetilde{O} \left(Q\sqrt{\frac{|J| T}{H}}\right)\)</span></p>
 <p>（省略了一些细节）综合来看我们能得到最终的regret bound为：</p>
 <p><span class="math inline">\(\mathcal{R}_{T}(\text { BOB algorithm })=\widetilde{O}\left(w^{\dagger} B_{T}+\frac{d T}{\sqrt{w^{\dagger}}}+\sqrt{H|J| T}\right)=\widetilde{O}\left(w^{\dagger} B_{T}+\frac{d T}{\sqrt{w^{\dagger}}}+d^{\frac{1}{2}} T^{\frac{3}{4}}\right)\)</span></p>
 <p><strong>估计参数</strong></p>
