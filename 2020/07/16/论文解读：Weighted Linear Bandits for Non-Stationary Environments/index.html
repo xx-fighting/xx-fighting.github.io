@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/07/16/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%EF%BC%9AWeighted%20Linear%20Bandits%20for%20Non-Stationary%20Environments/alg1.png">
 <meta property="article:published_time" content="2020-07-16T10:53:31.000Z">
-<meta property="article:modified_time" content="2020-07-16T12:01:52.394Z">
+<meta property="article:modified_time" content="2020-07-19T11:39:37.158Z">
 <meta property="article:author" content="Chenhao wang">
 <meta property="article:tag" content="papers">
 <meta name="twitter:card" content="summary">
@@ -175,10 +175,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-07-16 18:53:31 / Modified: 20:01:52" itemprop="dateCreated datePublished" datetime="2020-07-16T18:53:31+08:00">2020-07-16</time>
+              <time title="Created: 2020-07-16 18:53:31" itemprop="dateCreated datePublished" datetime="2020-07-16T18:53:31+08:00">2020-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-19 19:39:37" itemprop="dateModified" datetime="2020-07-19T19:39:37+08:00">2020-07-19</time>
+              </span>
 
           
 
@@ -199,12 +205,16 @@
 </ul>
 <p>Non-Stationary 情形下的一个重要特征就是<span class="math inline">\(\theta^*_t\)</span>可能会随时间而改变，并且改变的时间和大小是不可预知的，但主要有以下两种情形：</p>
 <ul>
-<li>piecewise-stationary</li>
-<li>slowly change</li>
+<li><p>piecewise-stationary</p>
+<ul>
+<li>allows <span class="math inline">\(θ_t\)</span>’s to change at most S times throughout the time horizon</li>
+</ul></li>
+<li><p>slowly change</p>
+<ul>
+<li>variation budget <span class="math display">\[ \sum_{s=1}^{T-1}\left\|\theta_{s}^{\star}-\theta_{s+1}^{\star}\right\|_{2} \leq B_{T} \]</span></li>
+</ul></li>
 </ul>
-<p>通常会有 variation budget 的约束，也就是：</p>
-<p><span class="math display">\[ \sum_{s=1}^{T-1}\left\|\theta_{s}^{\star}-\theta_{s+1}^{\star}\right\|_{2} \leq B_{T} \]</span></p>
-<p>这里 <span class="math inline">\(B_T\)</span> 理论上应该是一个未知的量，但这样分析的难度就很大，作者只讨论了<span class="math inline">\(B_T\)</span>已知的情况</p>
+<p>本文考虑的是在有 variation budget 的约束，这里 <span class="math inline">\(B_T\)</span> 理论上应该是一个未知的量，但这样分析的难度就很大，作者只讨论了<span class="math inline">\(B_T\)</span>已知的情况</p>
 <p>为了更方便的讨论问题，作者有如下假设：</p>
 <ul>
 <li><span class="math inline">\(\eta_t\)</span> 是一个 <span class="math inline">\(\sigma\)</span>-sub-gaussian 的随机变量</li>
@@ -263,11 +273,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/07/10/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
-    </a></div>
       <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/" rel="next" title=" 论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity">
+       论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     

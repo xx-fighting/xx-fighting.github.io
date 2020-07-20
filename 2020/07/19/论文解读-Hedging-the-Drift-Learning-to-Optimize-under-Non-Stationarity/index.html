@@ -20,30 +20,37 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="最近主要在看bandit相关的文章">
-<meta property="og:type" content="website">
-<meta property="og:title" content="OR_小白">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Paper link (29 Jun 2020 version): https:&#x2F;&#x2F;papers.ssrn.com&#x2F;sol3&#x2F;papers.cfm?abstract_id&#x3D;3261050 总体概述： 这篇文章主要考虑的是 non-stationary linear bandit 问题，采取的策略是 sliding window-upper confidence bound （SW-UCB) 方法，">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity">
+<meta property="og:url" content="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/index.html">
 <meta property="og:site_name" content="OR_小白">
-<meta property="og:description" content="最近主要在看bandit相关的文章">
+<meta property="og:description" content="Paper link (29 Jun 2020 version): https:&#x2F;&#x2F;papers.ssrn.com&#x2F;sol3&#x2F;papers.cfm?abstract_id&#x3D;3261050 总体概述： 这篇文章主要考虑的是 non-stationary linear bandit 问题，采取的策略是 sliding window-upper confidence bound （SW-UCB) 方法，">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/image-20200719193707263.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/image-20200720001637651.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/image-20200720205304641.png">
+<meta property="article:published_time" content="2020-07-19T09:30:02.000Z">
+<meta property="article:modified_time" content="2020-07-20T15:26:27.238Z">
 <meta property="article:author" content="Chenhao wang">
+<meta property="article:tag" content="papers">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/image-20200719193707263.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>OR_小白</title>
+  <title> 论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity | OR_小白</title>
   
 
 
@@ -141,9 +148,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -159,10 +167,9 @@
       <meta itemprop="name" content="OR_小白">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/19/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-Hedging-the-Drift-Learning-to-Optimize-under-Non-Stationarity/" class="post-title-link" itemprop="url"> 论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+           论文解读: Hedging the Drift: Learning to Optimize under Non-Stationarity
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -192,7 +199,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Paper link (29 Jun 2020 version): <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3261050" target="_blank" rel="noopener" class="uri">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3261050</a></p>
+        <p>Paper link (29 Jun 2020 version): <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3261050" target="_blank" rel="noopener" class="uri">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3261050</a></p>
 <h3 id="总体概述">总体概述：</h3>
 <p>这篇文章主要考虑的是 <strong>non-stationary</strong> linear bandit 问题，采取的策略是 sliding window-upper confidence bound （<strong>SW-UCB</strong>) 方法，这个方法已经在 stochastic 的情形下运用过，作者更大的贡献是在于提出了bandit-over-bandit (<strong>BOB</strong>)这个框架，从而动态的调整window 的大小，在当$ B_T$ (variation budget) 未知的时候。</p>
 <h3 id="问题描述">问题描述：</h3>
@@ -334,144 +341,33 @@
 <h3 id="代码">代码：</h3>
 <p>抽空自己再去实现一下</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/papers/" rel="tag"># papers</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%EF%BC%9AWeighted%20Linear%20Bandits%20for%20Non-Stationary%20Environments/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Chenhao wang">
-      <meta itemprop="description" content="最近主要在看bandit相关的文章">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OR_小白">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%EF%BC%9AWeighted%20Linear%20Bandits%20for%20Non-Stationary%20Environments/" class="post-title-link" itemprop="url">论文解读：Weighted Linear Bandits for Non-Stationary Environments</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-16 18:53:31" itemprop="dateCreated datePublished" datetime="2020-07-16T18:53:31+08:00">2020-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-19 19:39:37" itemprop="dateModified" datetime="2020-07-19T19:39:37+08:00">2020-07-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇文章主要讨论了Linear contextual bandits 在 Non-Stationary 情况下的求解办法。在这种情况下的流程如下：</p>
-<p>在时刻<span class="math inline">\(t\)</span> :</p>
-<ul>
-<li>选择一个 action : <span class="math inline">\(A_t\)</span></li>
-<li>观察到带噪音的 reward : <span class="math inline">\(X_t = A_t^T \theta^*_t + \eta_t\)</span></li>
-</ul>
-<p>Non-Stationary 情形下的一个重要特征就是<span class="math inline">\(\theta^*_t\)</span>可能会随时间而改变，并且改变的时间和大小是不可预知的，但主要有以下两种情形：</p>
-<ul>
-<li><p>piecewise-stationary</p>
-<ul>
-<li>allows <span class="math inline">\(θ_t\)</span>’s to change at most S times throughout the time horizon</li>
-</ul></li>
-<li><p>slowly change</p>
-<ul>
-<li>variation budget <span class="math display">\[ \sum_{s=1}^{T-1}\left\|\theta_{s}^{\star}-\theta_{s+1}^{\star}\right\|_{2} \leq B_{T} \]</span></li>
-</ul></li>
-</ul>
-<p>本文考虑的是在有 variation budget 的约束，这里 <span class="math inline">\(B_T\)</span> 理论上应该是一个未知的量，但这样分析的难度就很大，作者只讨论了<span class="math inline">\(B_T\)</span>已知的情况</p>
-<p>为了更方便的讨论问题，作者有如下假设：</p>
-<ul>
-<li><span class="math inline">\(\eta_t\)</span> 是一个 <span class="math inline">\(\sigma\)</span>-sub-gaussian 的随机变量</li>
-<li><span class="math inline">\(\forall t \geq 1, \forall a \in \mathcal{A}_{t},\|a\|_{2} \leq L\)</span></li>
-<li><span class="math inline">\(\forall t \geq 1,\left\|\theta_{t}^{\star}\right\|_{2} \leq S\)</span></li>
-<li><span class="math inline">\(\forall t \geq 1, \forall a \in \mathcal{A}_{t},\left|\left\langle a, \theta_{t}^{\star}\right\rangle\right| \leq 1\)</span></li>
-</ul>
-<p><strong>核心思想</strong>：对于如何估计参数 <span class="math inline">\(\theta^*_t\)</span>，作者采用了加权最小二乘估计，也就是对于历史数据，对比较新的数据赋予较大的权重，对早已收集到的数据赋予较小的权重，并据此构建 Upper Confidence Bound 来选取 action</p>
-<p><strong>加权最小二乘估计</strong></p>
-<p><span class="math display">\[\hat{\theta}_{t}=\underset{\theta \in \mathbb{R}^{d}}{\arg \min } \sum_{s=1}^{t} w_{s}\left(X_{s}-A_{s}^{\top} \theta\right)^{2}+\frac{\lambda_{t}}{2}\|\theta\|_{2}^{2}\]</span></p>
-<p><span class="math display">\[\hat{\theta}_{t}=\left(\sum_{s=1}^{t} w_{s} A_{s} A_{s}^{\top}+\lambda_{t} I_{d}\right)^{-1} \sum_{s=1}^{t} w_{s} A_{s} X_{s}\]</span></p>
-<p>假设 <span class="math inline">\(\theta_{t}^{\star}=\theta^{\star}\)</span> 对于任意的 <span class="math inline">\(\delta&gt;0\)</span> 以 <span class="math inline">\(1-\delta\)</span> 的概率,有以下估计</p>
-<p><span class="math display">\[\mathbb{P}\left(\forall t,\left\|\hat{\theta}_{t}-\theta^{\star}\right\|_{V_{t} \tilde{V}_{t}^{-1} V_{t}} \leq \frac{\lambda_{t}}{\sqrt{\mu_{t}}} S+\sigma \sqrt{2 \log (1 / \delta)+d \log \left(1+\frac{L^{2} \sum_{s=1}^{t} w_{s}^{2}}{d \mu_{t}}\right)}\right)\]</span></p>
-<ul>
-<li><span class="math inline">\(V_{t} =\sum_{s=1}^{t} w_{s} A_{s} A_{s}^{\top}+\lambda_{t} I_{d}\)</span></li>
-<li><span class="math inline">\(\widetilde{V}_{t} =\sum_{s=1}^{t} w_{s}^{2} A_{s} A_{s}^{\top}+\mu_{t} I_{d}\)</span></li>
-</ul>
-<p>这里注意到对于正则项的系数 <span class="math inline">\(\lambda\)</span> 也是一个随时间变化的参数，并且引入了一个新的参数<span class="math inline">\(\mu_t\)</span></p>
-<ul>
-<li>首先对于以上的 concentration inequality，总共涉及到三个参数<span class="math inline">\(\lambda_t, \mu_t, w_t\)</span></li>
-<li>为了保证 <span class="math inline">\(V_{t} \tilde{V}_{t}^{-1} V_{t}\)</span> 是 scale-invariant 的，<span class="math inline">\(\mu_t\)</span> 应该和 <span class="math inline">\(\lambda_t^2\)</span> 是同阶的</li>
-<li>在 concentration inequality 总共有两项，如果我们对 <span class="math inline">\(w_t\)</span> 采用指数增长，也就是<span class="math inline">\(w_t = \gamma^{-t}\)</span>，<span class="math inline">\(0&lt;\gamma&lt;1\)</span>，那么后一项将会占据主要的作用，从而使得我们可能不会找到最优的action， 因此对<span class="math inline">\(\lambda_t\)</span>也应该依赖于时间变化，比如<span class="math inline">\(\lambda_t = \gamma_t^{-t} \lambda\)</span></li>
-</ul>
-<p><strong>算法框架</strong></p>
-<p><img src="/2020/07/16/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%EF%BC%9AWeighted%20Linear%20Bandits%20for%20Non-Stationary%20Environments/alg1.png"></p>
-<ul>
-<li>算法中的核心是估计 upper confidence bound, 也就是 <span class="math inline">\(\beta_t\)</span>，然后依次更新相关参数</li>
-</ul>
-<p><strong>理论证明</strong></p>
-<ul>
-<li>引入中间变量 <span class="math inline">\(\bar{\theta}_{t}=V_{t-1}^{-1}\left(\sum_{s=1}^{t-1} \gamma^{-s} A_{s} A_{s}^{\top} \theta_{s}^{\star}+\gamma^{t-1} \theta_{t}^{\star}\right)\)</span>，可以看作是对<span class="math inline">\(\theta^*_t\)</span>的一个不带噪音的估计</li>
-<li>The confidence ellipsoid <span class="math inline">\(\mathcal{C}_{t}=\left\{\theta \in \mathbb{R}^{d}:\left\|\theta-\hat{\theta}_{t-1}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}} \leq \beta_{t-1}\right\}\)</span></li>
-<li><span class="math inline">\(\beta_{t-1}\)</span>的构成中后面一项实际是对<span class="math inline">\(S_t = \sum_{s=1}^t w_s A_s \eta_s\)</span> 在 <span class="math inline">\(\tilde{V}_{t}^{-1}\)</span>范数下的估计 (<strong>lemma 1, 2, Proposition 1</strong>)</li>
-<li>可以证明 <span class="math inline">\(\bar{\theta}_{t}\)</span> 以至少 <span class="math inline">\(1-\delta\)</span> 的概率属于 <span class="math inline">\(\mathcal{C}_{t}\)</span> (<strong>Proposition 3</strong>)</li>
-<li><span class="math display">\[r_t = \left\langle A_{t}^{\star}-A_{t}, \bar{\theta}_{t}\right\rangle+\left\langle A_{t}^{\star}-A_{t}, \theta_{t}^{\star}-\bar{\theta}_{t}\right\rangle \leq \left\|A_{t}\right\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}}  \underbrace{\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}}_{\text {Deviation term }}    +2 L \underbrace{\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}}_{\text {Bias term }}\]</span></li>
-<li>对于 <span class="math inline">\(\left\|\bar{\theta}_{t}-\theta_{t}\right\|_{V_{t-1} \tilde{V}_{t-1}^{-1} V_{t-1}}\)</span> ，因为两者都位于<span class="math inline">\(\mathcal{C}_{t}\)</span>中，所以可以被 <span class="math inline">\(\beta_{t-1}\)</span> bound住</li>
-<li>对于<span class="math inline">\(\left\|\theta_{t}^{\star}-\bar{\theta}_{t}\right\|_{2}\)</span> 这一项，因为<span class="math inline">\(\bar{\theta}_{t}\)</span>的构成中涉及到前t项历史数据，而在参数指数增长<span class="math inline">\(w_t\)</span>的情形下，最开始一些项便不太重要，因此引入参数<span class="math inline">\(D\)</span>来进行划分为<span class="math inline">\(s&lt;t-D\)</span> 和 <span class="math inline">\(t-D \leq s \leq t-1\)</span>两部分分别进行估计</li>
-<li>还剩一项 <span class="math inline">\(\left\|A_{t}\right\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}}\)</span>，作者根据<span class="math inline">\(\left|\left\langle A_t, \theta_{t}^{\star}\right\rangle\right|\leq 1\)</span>这一假设放缩为估计（<strong>没看懂</strong>） <span class="math inline">\(\min(1, \|A_t\|_{V_{t-1}^{-1} \tilde{V}_{t-1} V_{t-1}^{-1}})\)</span>，再利用不等式 <span class="math inline">\(\min(1,x) \leq 2 \log(1+x) \quad \forall x \geq 0\)</span>进一步放缩，并根据<span class="math inline">\(V_{t}和\tilde{V}_{t}\)</span>的构成形式得到最后的结果 (<strong>lemma 4, Proposition 4</strong>)</li>
-</ul>
-<p><strong>代码</strong> <a href="https://github.com/YRussac/WeightedLinearBandits" target="_blank" rel="noopener" class="uri">https://github.com/YRussac/WeightedLinearBandits</a></p>
-<p><strong>Slides</strong> <a href="https://https://sgrunewalder.files.wordpress.com/2019/09/ak_mab19.pdf" target="_blank" rel="noopener">https://sgrunewalder.files.wordpress.com/2019/09/ak_mab19.pdf</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/16/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%EF%BC%9AWeighted%20Linear%20Bandits%20for%20Non-Stationary%20Environments/" rel="prev" title="论文解读：Weighted Linear Bandits for Non-Stationary Environments">
+      <i class="fa fa-chevron-left"></i> 论文解读：Weighted Linear Bandits for Non-Stationary Environments
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -524,6 +420,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#总体概述"><span class="nav-number">1.</span> <span class="nav-text">总体概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">2.</span> <span class="nav-text">问题描述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#假设"><span class="nav-number">3.</span> <span class="nav-text">假设：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号简介"><span class="nav-number">4.</span> <span class="nav-text">符号简介：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法简介"><span class="nav-number">5.</span> <span class="nav-text">算法简介：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法流程"><span class="nav-number">6.</span> <span class="nav-text">算法流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#想法"><span class="nav-number">7.</span> <span class="nav-text">想法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数选择"><span class="nav-number">8.</span> <span class="nav-text">参数选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">9.</span> <span class="nav-text">小结：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">10.</span> <span class="nav-text">代码：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
